@@ -1,111 +1,219 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+function changeSlide(index: number) {
+  throw new Error("Function not implemented.");
+}
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+
+const galleryItems = [
+  { title: "Chimeneas", image: "/chimeneas3.jpg" },
+  { title: "Cornisas", image: "/cornisas.jpg" },
+  { title: "Rosetones", image: "/rosetones-pequeños3.jpg" },
+  { title: "Rosetones Lizos", image: "/rosetones-pequeños2.jpg" },
+  { title: "Rosetones Pequeños", image: "/rosetones-pequeños.jpg" },
+  { title: "Rosetones Grandes", image: "/rosetones-grandes.jpg" },
+  { title: "Recuadros Baquetones", image: "/recuadros-baquetones.jpg" },
+  { title: "Cornisas Lizas", image: "/cornisas-lizas2.jpg" },
+  { title: "Cornisa Grande", image: "/cornisa-grande.jpg" },
+  { title: "Cortineros", image: "/cortineros.jpg" },
+  { title: "Tallas", image: "/tallas2.jpg" },
+  { title: "Cúpulas", image: "/cupulas.jpg" },
+  { title: "Techos en placa de yeso", image: "/techos-decorados-en-yeso.jpg" },
+  { title: "Drywall", image: "/drywall.jpg" },
+];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      main {
+        width: 1000px;
+        margin: 0 auto;
+      }
+      /* Galería */
+      .gallery {
+        padding: 2em 1em;
+        text-align: center;
+      }
+	  .gallery h2 {
+    	font-size: 2rem;
+    	margin-bottom: 1rem;
+    	color: #333;
+  }
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+        gap: 1.2rem;
+		max-width: 1000px;
+        margin: 0 auto;
+      }
+	  .gallery-item {
+    	background: white;
+    	border-radius: 10px;
+    	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    	overflow: hidden;
+    	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+      .gallery-item:hover {
+        transform: scale(1.05);
+		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+      .gallery-item img {
+        width: 100%;
+		height: auto;
+		border-radius: 10px 10px 0 0;
+      }
+	  .gallery-item figcaption {
+    	padding: 0.75rem;
+    	font-weight: bold;
+    	text-align: center;
+    	background: #f8f8f8;
+    	border-radius: 0 0 10px 10px;
+  		}
+      .gallery-item p {
+        margin: 0.2rem 0 0;
+        font-weight: bold;
+      }
+      @media (max-width: 768px) {
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Slider */
+      .slider-container {
+        position: relative;
+        width: 100%;
+        max-width: 1000px;
+        overflow: hidden;
+        margin: 0px auto;
+        border-radius: 12px;
+        
+      }
+
+      .slider {
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+
+      .slide {
+        min-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .slide img {
+        width: 100%;
+        border-radius: 4px;
+      }
+	  .slide p {
+		font-weight: 700;
+		font-size: 2em;
+	  }
+
+      /* Dots */
+      .dots {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .dot {
+        height: 12px;
+        width: 12px;
+        margin: 0 5px;
+        
+        border-radius: 50%;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .dot.active {
+        background-color: rgb(92, 92, 92);
+      }
+
+      @media (max-width: 768px) {
+        main {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section>
+        <div class="slider-container">
+          <div class="slider" id="slider">
+            {
+              galleryItems.map((item, index) => (
+                <div class="slide">
+                  <p class="slide-title">{item.title}</p>
+                  <img src={item.image} alt={item.title} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="dots ">
+          {
+            galleryItems.map((_, index) => (
+              <span class="dot bg-gray-900" data-index={index} />
+            ))
+          }
+        </div>
+      </section>
+      <section class="gallery">
+        <h2>Galería</h2>
+        <div class="gallery-grid">
+			{
+			  galleryItems.map((item) => (
+				<figure class="gallery-item">
+				  <img src={item.image} alt={item.title} loading="lazy" />
+				  <figcaption>{item.title}</figcaption>
+				</figure>
+			  ))
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
+		  </div>
+      </section>
+    </main>
+    <Footer />
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let currentIndex = 0;
+        const dots = document.querySelectorAll(".dot");
+        const slider = document.querySelector(".slider") as HTMLElement | null;
+
+        function changeSlide(index: number) {
+          if (slider) {
+            slider.style.transform = `translateX(-${index * 100}%)`;
+            currentIndex = index;
+            updateDots();
+          }
+        }
+
+        function updateDots() {
+          dots.forEach((dot, i) => {
+            if (i === currentIndex) {
+              dot.classList.add("active");
+            } else {
+              dot.classList.remove("active");
+            }
+          });
+        }
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener("click", () => changeSlide(index));
+        });
+
+        // Marcar el primer punto como activo al inicio
+        updateDots();
+      });
+    </script>
+  </body>
 </html>

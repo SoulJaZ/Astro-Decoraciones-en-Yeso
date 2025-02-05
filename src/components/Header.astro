@@ -7,9 +7,10 @@ import { SITE_TITLE } from '../consts';
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			<HeaderLink href="/">Inicio</HeaderLink>
+			<HeaderLink href="/blog">Galeria</HeaderLink>
+			<HeaderLink href="/about">Sobre mí</HeaderLink>
+			<HeaderLink href="/contact">Contacto</HeaderLink>
 		</div>
 		<div class="social-links">
 			<a href="https://m.webtoo.ls/@astro" target="_blank">
@@ -43,11 +44,15 @@ import { SITE_TITLE } from '../consts';
 	</nav>
 </header>
 <style>
+	@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 	header {
 		margin: 0;
 		padding: 0 1em;
 		background: white;
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		font-family: "Cormorant Garamond", serif;
+  		font-weight: 700;
+  		font-style: normal;
 	}
 	h2 {
 		margin: 0;
